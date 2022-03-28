@@ -1,81 +1,69 @@
 ﻿using AutoMapper;
-using HashWebApi.ModelsDTO;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HashWebApi.Controllers
 {
-    [ApiController]
-    [Route("user")]
-    public class UserController : ControllerBase
-    {
-        private readonly IMapper m_mapper;
-        
-        [HttpPost]
-        public IActionResult CreateUser([FromBody] UserCreationParamsDTO userCreationParams)
-        {
-            #region Pre-Conditions
+	public interface IUserService
+	{
+		IActionResult GetUser(string? userId);
+		IActionResult CreateUser(string? userId);
+		IActionResult UpdateUser(string? userId);
+		IActionResult DeleteUser(string? userId);
+	}
 
-            if (userCreationParams == null)
-                return BadRequest(new ErrorDTO($"{nameof(userCreationParams)} cannot be null."));
+	[ApiController]
+	[Route("[controller]")]
+	public class UserController : ControllerBase
+	{
+		private readonly IUserService m_service;
+		private readonly ILogger<UserController> m_logger;
+		private readonly IMapper m_mapper;
 
-            #endregion
+		public UserController(IUserService mService, ILogger<UserController> mLogger, IMapper mMapper)
+		{
+			m_service = mService;
+			m_logger = mLogger;
+			m_mapper = mMapper;
+		}
 
+		[HttpGet]
+		[Route("{userId}")]
+		public IActionResult GetUser([FromRoute] string? userId)
+		{
+			if (userId is null) 
+				return BadRequest($"{nameof(userId)} can't be null.");
 
-            return Ok(); //TODO: Change http response to Created();
-        }
+			return Ok();
+		}
 
-        /// <summary>
-        /// Working
-        /// </summary>
-        /// <param name="userId"></param>
-        /// <returns></returns>
-        [HttpPost]
-        [Route("/{userId}/send-email-confirmation")]
-        public IActionResult SendEmailConfirmationCode([FromRoute] string userId)
-        {
-            #region Pre-Conditions
+		[HttpPost]
+		[Route("{userId}")]
+		public IActionResult CreateUser([FromRoute] string? userId)
+		{
+			if (userId is null)
+				return BadRequest($"{nameof(userId)} can't be null.");
 
-            if (string.IsNullOrEmpty(userId))
-                return BadRequest(new ErrorDTO($"{nameof(userId)} cannot be null."));
+			return Ok();
+		}
 
-            #endregion
+		[HttpPatch]
+		[Route("{userId}")]
+		public IActionResult UpdateUser([FromRoute] string? userId)
+		{
+			if (userId is null)
+				return BadRequest($"{nameof(userId)} can't be null.");
 
-            try
-            {
+			return Ok();
+		}
 
-            }
-            catch (Exception ex)
-            {
+		[HttpDelete]
+		[Route("{userId}")]
+		public IActionResult DeleteUser([FromRoute] string? userId)
+		{
+			if (userId is null)
+				return BadRequest($"{nameof(userId)} can't be null.");
 
-            }
-
-            return Ok();
-        }
-
-        [HttpPost]
-        [Route("/{userId}/check-email-confirmation")]
-        public IActionResult CheckEmailConfirmationCode([FromRoute] string userId, [FromBody] string emailConfirmationCode)
-        {
-            #region Pre-Conditions
-
-            if (string.IsNullOrEmpty(userId))
-                return BadRequest(new ErrorDTO($"{nameof(userId)} cannot be null."));
-
-            if (string.IsNullOrEmpty(emailConfirmationCode))
-                return BadRequest(new ErrorDTO($"{nameof(emailConfirmationCode)} cannot be null."));
-
-            #endregion
-
-            try
-            {
-
-            }
-            catch (Exception ex)
-            {
-
-            }
-
-            return Ok();
-        }
-    }
+			return Ok();
+		}
+	}
 }
