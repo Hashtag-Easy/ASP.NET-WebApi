@@ -22,8 +22,7 @@
 	<ItemGroup>
 		<Folder Include="ModelsDTO\" />
 		<Folder Include="Models\" />
-		<Folder Include="Servieces\" />
-		<Folder Include="Validators\" />
+		<Folder Include="Services\" />
 	</ItemGroup>
 
 	<PropertyGroup>

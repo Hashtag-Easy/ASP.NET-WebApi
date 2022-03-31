@@ -10,7 +10,7 @@ builder.Services.AddSwaggerGen(options =>
 {
     options.SwaggerDoc("v1", new OpenApiInfo
     {
-        Version = "v1",
+        Version = "0.1.5",
         Title = "HashWebApi",
         Description = "ASP.NET CORE WebApi created by Kacper ¯abiñski",
         TermsOfService = new Uri("https://www.youtube.com/watch?v=PvB0kWs2IPQ"),
@@ -40,7 +40,7 @@ if (app.Environment.IsDevelopment())
     });
     app.UseSwaggerUI(options =>
     {
-        options.SwaggerEndpoint("/swagger/v1/swagger.json", "HashGamePortalApi");
+        options.SwaggerEndpoint("/swagger/v1/swagger.json", "SandstormWebApi");
         options.RoutePrefix = string.Empty;
     });
 }
