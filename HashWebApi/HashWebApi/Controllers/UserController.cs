@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using HashWebApi.Entities;
+using HashWebApi.ModelsDTO;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HashWebApi.Controllers
@@ -6,7 +8,7 @@ namespace HashWebApi.Controllers
 	public interface IUserService
 	{
 		IActionResult GetUser(string? userId);
-		IActionResult CreateUser(string? userId);
+		IActionResult CreateUser(User? user);
 		IActionResult UpdateUser(string? userId);
 		IActionResult DeleteUser(string? userId);
 	}
@@ -36,14 +38,21 @@ namespace HashWebApi.Controllers
 			return Ok();
 		}
 
+		/// <summary>
+		/// Creates user.
+		/// </summary>
+		/// <param name="user">User params.</param>
+		/// <returns>Path and copy to created resource.</returns>
 		[HttpPost]
-		[Route("{userId}")]
-		public IActionResult CreateUser([FromRoute] string? userId)
+		[Route("")]
+		public IActionResult CreateUser([FromRoute] UserDTO? user)
 		{
-			if (userId is null)
-				return BadRequest($"{nameof(userId)} can't be null.");
+			if (ModelState.IsValid)
+			{
+				return BadRequest(ModelState);
+			}
 
-			return Ok();
+			return Created("", user);
 		}
 
 		[HttpPatch]
